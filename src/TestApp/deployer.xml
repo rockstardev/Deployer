@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<deployer>
+  <!-- xcopy -->
+  <deployInfo type="xcopy" machineName="csharp" lookFurther="false">
+    <targetPath clear="false" backup="false">c:\deployer-xcopy</targetPath>
+    <!-- some comment -->
+    <configReplaces>
+      <entry>
+        <find>
+          <![CDATA[<setting name="SomeSetting" serializeAs="String">
+                <value>Blah</value>
+            </setting>]]>
+        </find>
+        <!-- some comment -->
+        <replace>
+          <![CDATA[<setting name="SomeSetting" serializeAs="String">
+                <value>Eh 123</value>
+            </setting>]]>
+        </replace>
+      </entry>
+      <!-- some comment -->
+      <entry findStart="&lt;add name=&quot;Default" findEnd="/connectionStrings">
+        <![CDATA[<add name="Default" connectionString="Data Source=RAZVOJ1dsada\DOTEXE2005DEV;Initial Catalog=ASTRA_IS_TEST14;User ID=astris;PWD=astris" providerName="System.Data.SqlClient"/>
+  </connectionStrings]]>        
+      </entry>
+    </configReplaces>
+    <configReplaces searchExpression="*.xml">
+      <entry>
+        <find>bleh&gt;Entry that will be changed in all xml files&lt;/bleh</find>
+        <replace>bleh&gt;New value&lt;/bleh</replace>
+      </entry>
+    </configReplaces>
+  </deployInfo>
+
+  <!-- xcopy -->
+  <deployInfo type="xcopy" machineName="otherTestMachine">
+    <targetPath>d:\deployer-xcopy</targetPath>
+  </deployInfo>
+</deployer>

@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<deployer>
+  <!-- service, clickOnce, xcopy -->
+  <deployInfo type="clickOnce" machineName="tyrion">
+    <targetPath>c:\deployer-clickOnce</targetPath>
+    <usePackedKey keyPassword="123">true</usePackedKey>
+    <providerUrl>\\tyrion\oblik\</providerUrl>
+    <configReplaces>
+      <entry>
+        <find>value&gt;Šmeker&lt;/value</find>
+        <replace>value&gt;Milorad Čavić&lt;/value</replace>
+      </entry>
+    </configReplaces>
+    <dllCache>
+      <dll name="stdole.dll" copyTo="{manifestDirectory}" />
+      <dll name="Interop.VSFlex7L.dll" copyTo="{manifestDirectory}" />
+    </dllCache>
+  </deployInfo>
+</deployer>

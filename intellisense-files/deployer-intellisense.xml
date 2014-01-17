@@ -1,0 +1,4 @@
+﻿<SchemaCatalog xmlns="http://schemas.microsoft.com/xsd/catalog">
+  <Schema href="%InstallRoot%/xml/schemas/deployer-full.xsd" targetNamespace="http://schemas.deployer.com/intellisense"/>
+  <Association extension="xml" schema="%InstallRoot%/xml/schemas/deployer-full.xsd"/>
+</SchemaCatalog>

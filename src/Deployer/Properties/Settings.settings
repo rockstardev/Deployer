@@ -1,0 +1,24 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Deployer.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ArchivePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">c:\!deployer\archive</Value>
+    </Setting>
+    <Setting Name="DropPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">c:\!deployer\drop</Value>
+    </Setting>
+    <Setting Name="LogPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">c:\!deployer\logs</Value>
+    </Setting>
+    <Setting Name="DllCache" Type="System.String" Scope="User">
+      <Value Profile="(Default)">c:\!deployer\dllCache</Value>
+    </Setting>
+    <Setting Name="BackupPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">c:\!deployer\backup</Value>
+    </Setting>
+    <Setting Name="ErrorPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">c:\!deployer\error</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

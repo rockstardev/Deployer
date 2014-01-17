@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<deployer>
+  <!-- xcopy -->
+  <deployInfo type="xcopy" machineName="tyrion" lookFurther="false">
+    <targetPath clear="false" backup="false">c:\deployed</targetPath>
+    <configReplaces>
+      <entry>
+        <find>value&gt;Blah&lt;/value</find>
+        <replace>value&gt;Eh1&lt;/value</replace>
+      </entry>
+    </configReplaces>
+    <configReplaces searchExpression="*.config">
+      <entry>
+        <find>bleh&gt;Entry that will be changed&lt;/bleh</find>
+        <replace>bleh&gt;New value&lt;/bleh</replace>
+      </entry>
+    </configReplaces>
+  </deployInfo>
+
+  <!-- service -->
+  <deployInfo type="service" machineName="tyrion">
+    <targetPath clear="false" backup="true">c:\deployer-service</targetPath>
+    <backupInfo>
+      <exclude path="~\someFiles" />
+    </backupInfo>
+    <serviceName>SomeUniqueName</serviceName>
+    <serviceMachine>tyrion</serviceMachine>
+  </deployInfo>
+
+  <!-- clickOnce -->
+  <deployInfo type="clickonce" machineName="test9">
+    <targetPath>\\192.168.40.102\Clients\test</targetPath>
+    <usePackedKey>false</usePackedKey>
+    <providerUrl>\\192.168.40.102\Clients\test</providerUrl>
+    <configReplaces searchExpression="*.config">
+      <entry>
+        <find>value&gt;123&lt;/value</find>
+        <replace>value&gt;konfig&lt;/value</replace>
+      </entry>
+    </configReplaces>
+    <dllCache>
+      <dll name="stdole.dll" copyTo="{manifestDirectory}" />
+      <dll name="Interop.VSFlex7L.dll" copyTo="{manifestDirectory}" />
+    </dllCache>
+  </deployInfo>
+
+  <!-- clickOnce -->
+  <deployInfo type="clickonce" machineName="someMachineName">
+    <targetPath>\\192.168.40.102\Clients\test</targetPath>
+    <usePackedKey keyPassword="123">true</usePackedKey>
+    <providerUrl>\\192.168.40.102\Clients\test</providerUrl>
+  </deployInfo>
+
+  <!-- databaseScript -->
+  <deployInfo type="databasescript">
+    <connectionString>Data Source=psimr;Initial Catalog=PsiClient;Integrated Security=True</connectionString>
+    <isolationLevel>ReadCommitted</isolationLevel>
+  </deployInfo>
+</deployer>

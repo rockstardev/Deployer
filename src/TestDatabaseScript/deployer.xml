@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<deployer>
+  <!-- databaseScript -->
+  <deployInfo type="databaseScript">
+    <connectionString>Data Source=tyrion\sqlexpress;Initial Catalog=master;Integrated Security=True</connectionString>
+    <isolationLevel>ReadCommitted</isolationLevel>
+    <commandTimeout>30</commandTimeout>
+  </deployInfo>
+</deployer>

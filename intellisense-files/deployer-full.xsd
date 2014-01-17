@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="deployer">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" name="deployInfo">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" name="connectionString" type="xs:string" />
+              <xs:element minOccurs="0" name="isolationLevel" type="xs:string" />
+              <xs:element minOccurs="0" name="targetPath">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="clear" type="xs:boolean" use="optional" />
+                      <xs:attribute name="backup" type="xs:boolean" use="optional" />
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element minOccurs="0" name="usePackedKey">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:boolean">
+                      <xs:attribute name="keyPassword" type="xs:unsignedByte" use="optional" />
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element minOccurs="0" name="providerUrl" type="xs:string" />
+              <xs:element minOccurs="0" name="backupInfo">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="exclude">
+                      <xs:complexType>
+                        <xs:attribute name="path" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element minOccurs="0" name="serviceName" type="xs:string" />
+              <xs:element minOccurs="0" name="serviceMachine" type="xs:string" />
+              <xs:element minOccurs="0" maxOccurs="unbounded" name="configReplaces">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element minOccurs="0" maxOccurs="unbounded" name="entry">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="find" type="xs:string" />
+                          <xs:element name="replace" type="xs:string" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="searchExpression" type="xs:string" use="optional" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element minOccurs="0" name="dllCache">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="unbounded" name="dll">
+                      <xs:complexType>
+                        <xs:attribute name="name" type="xs:string" use="required" />
+                        <xs:attribute name="copyTo" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="type" type="deploymentTypes" use="required" />
+            <xs:attribute name="machineName" type="xs:string" use="optional" />
+            <xs:attribute name="lookFurther" type="xs:boolean" use="optional" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="deploymentTypes">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="xcopy" />
+      <xs:enumeration value="service" />
+      <xs:enumeration value="clickonce" />
+      <xs:enumeration value="databasescript" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<deployer>
+  <!-- service, clickOnce, xcopy -->
+  <deployInfo type="service" machineName="tyrion">
+    <targetPath clear="false" backup="true">c:\deployer-service</targetPath>
+    <backupInfo>
+      <exclude path="~\someFiles" />
+    </backupInfo>
+    <serviceName>SomeUniqueName</serviceName>
+    <serviceMachine>tyrion</serviceMachine>
+  </deployInfo>
+</deployer>
