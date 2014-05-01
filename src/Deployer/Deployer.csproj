@@ -137,7 +137,10 @@
       <DependentUpon>deployer-full.xsd</DependentUpon>
     </None>
     <None Include="Deployer_TemporaryKey.pfx" />
-    <None Include="install.bat">
+    <None Include="InstallBats\svc_uninst.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="InstallBats\svc_install.bat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Properties\Settings.settings">

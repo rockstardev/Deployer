@@ -36,6 +36,7 @@ namespace Deployer
             this.serviceInstaller1.Description = "Service that deploys components";
             this.serviceInstaller1.DisplayName = "Deployer";
             this.serviceInstaller1.ServiceName = "DeployerService";
+            this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             // 
             // serviceProcessInstaller1
             // 
