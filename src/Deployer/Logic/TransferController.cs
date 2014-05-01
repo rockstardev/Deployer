@@ -53,7 +53,14 @@ namespace Deployer.Logic
 
             FileSystemUtil.CopyFolder(finfo.DirectoryName, instructions[0]);
 
-            finfo.Directory.Delete(true);
+            if (finfo.DirectoryName.TrimEnd('\\') != Sett.TransferPath.TrimEnd('\\'))
+            {
+                finfo.Directory.Delete(true);
+            }
+            else
+            {
+                FileSystemUtil.ClearFolder(finfo.Directory);
+            }
 
             onNoticeEvent("TRANSFER END '{0}'", packagePath);
         }
