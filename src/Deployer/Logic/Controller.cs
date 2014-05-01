@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.IO;
 using System.Threading;
 using System.Xml;
@@ -10,7 +8,7 @@ using Deployer.DeployTypes;
 
 namespace Deployer.Logic
 {
-    class Controller
+    class Controller : BaseController
     {
         public Controller()
         {
@@ -31,19 +29,6 @@ namespace Deployer.Logic
         private FileSystemWatcher _fswZip;
         private FileSystemWatcher _fswRar;
         private object _deploySync = new object();
-        public delegate void NoticeDelegate(string message);
-        public event NoticeDelegate NoticeEvent;
-
-        private void onNoticeEvent(string message)
-        {
-            if (NoticeEvent != null)
-                NoticeEvent(message);
-        }
-
-        private void onNoticeEvent(string format, params object[] args)
-        {
-            onNoticeEvent(string.Format(format, args));
-        }
 
 
         /// <summary>
@@ -52,32 +37,22 @@ namespace Deployer.Logic
         /// <param name="o">foo</param>
         private void init(object o)
         {
-            string watchPath = Properties.Settings.Default.DropPath;
+            string watchPath = Sett.DropPath;
+            var handler = new FileSystemEventHandler(_fsw_Created);
 
             _fswZip = new FileSystemWatcher(watchPath);
-            _fswZip.Created += new FileSystemEventHandler(_fsw_Created);
+            _fswZip.Created += handler;
             _fswZip.Filter = "*.zip";
 
             _fswRar = new FileSystemWatcher(watchPath);
-            _fswRar.Created += new FileSystemEventHandler(_fsw_Created);
+            _fswRar.Created += handler;
             _fswRar.Filter = "*.rar";
+
+            processExisting(watchPath, _fswZip.Filter, handler);
+            processExisting(watchPath, _fswRar.Filter, handler);
 
             _fswZip.EnableRaisingEvents = true;
             _fswRar.EnableRaisingEvents = true;
-
-            processExisting(watchPath);
-        }
-
-        /// <summary>
-        /// Processes install zips waiting in dump location
-        /// </summary>
-        /// <param name="watchPath"></param>
-        private void processExisting(string watchPath)
-        {
-            foreach (string s in Directory.GetFiles(watchPath, "*.zip"))
-                processPackage(s);
-            foreach (string s in Directory.GetFiles(watchPath, "*.rar"))
-                processPackage(s);
         }
 
         /// <summary>
@@ -85,30 +60,24 @@ namespace Deployer.Logic
         /// </summary>
         private void initPaths()
         {
-            string path = Properties.Settings.Default.DropPath;
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
+            initPaths(
+                Sett.DropPath,
+                Sett.ArchivePath,
+                Sett.DllCache,
+                Sett.LogPath,
+                Sett.BackupPath,
+                Sett.ErrorPath,
+                Sett.TransferPath);
+        }
 
-            path = Properties.Settings.Default.ArchivePath;
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
-
-            path = Properties.Settings.Default.DllCache;
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
-
-            path = Properties.Settings.Default.LogPath;
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
-
-            path = Properties.Settings.Default.BackupPath;
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
-
-            path = Properties.Settings.Default.ErrorPath;
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
-
+        private void initPaths(params string[] paths)
+        {
+            for (int i = 0; i < paths.Length; i++)
+            {
+                var path = paths[i];
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+            }
         }
 
         void _fsw_Created(object sender, FileSystemEventArgs e)
@@ -129,7 +98,7 @@ namespace Deployer.Logic
                 if (fi != null)
                 {
                     fi.MoveTo(string.Format("{0}\\{1}-{2}{3}", 
-                        Properties.Settings.Default.ErrorPath, 
+                        Sett.ErrorPath, 
                         fi.Name.Replace(fi.Extension, ""), 
                         DateTime.Now.ToString("yyyy-MM-dd-HH-mm"),
                         fi.Extension)
@@ -157,7 +126,7 @@ namespace Deployer.Logic
 				onNoticeEvent("STARTING deploy '{0}'", packagePath);
 
                 FileInfo fi = new FileInfo(packagePath);
-                string extractPath = String.Format("{0}\\{1}-{2}", Properties.Settings.Default.ArchivePath, fi.Name.Replace(fi.Extension, ""), DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss"));
+                string extractPath = String.Format("{0}\\{1}-{2}", Sett.ArchivePath, fi.Name.Replace(fi.Extension, ""), DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss"));
 
 
                 if (fi.Extension == ".zip")
@@ -244,7 +213,7 @@ namespace Deployer.Logic
                             break;
                     }
 
-                    var movePath = String.Format("{0}\\{1}", Properties.Settings.Default.ArchivePath, fi.Name);
+                    var movePath = String.Format("{0}\\{1}", Sett.ArchivePath, fi.Name);
                     if (File.Exists(movePath))
                         File.Delete(movePath);
                     

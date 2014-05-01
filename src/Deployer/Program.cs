@@ -12,6 +12,7 @@ namespace Deployer
     static class Program
     {
         private static Controller _ctrl;
+        private static TransferController _ctrlTransfer;
 
         /// <summary>
         /// The main entry point for the application.
@@ -22,34 +23,14 @@ namespace Deployer
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            _fileSystemMutex = new Mutex(false, "DeployerMutexxx");
-
             _ctrl = new Controller();
-            _ctrl.NoticeEvent += new Controller.NoticeDelegate(_ctrl_NoticeEvent);
+            _ctrlTransfer = new TransferController();
 
 #if DEBUG
             Application.Run(new MainForm());
 #else
             ServiceBase.Run(new DeployerService());
 #endif
-        }
-
-        private static Mutex _fileSystemMutex;
-        static void _ctrl_NoticeEvent(string message)
-        {
-            try
-            {
-                _fileSystemMutex.WaitOne();
-
-                string logPath = string.Format("{0}\\{1}.txt", Properties.Settings.Default.LogPath, DateTime.Now.ToString("yyyy-MM-dd"));
-
-                using (StreamWriter sw = new StreamWriter(logPath, true))
-                    sw.WriteLine("{0} - {1}", DateTime.Now, message);
-            }
-            finally
-            {
-                _fileSystemMutex.ReleaseMutex();
-            }
         }
     }
 }

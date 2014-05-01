@@ -93,6 +93,8 @@
     <Compile Include="DeployTypes\DomainClasses\DllCacheEntry.cs" />
     <Compile Include="DeployTypes\Service.cs" />
     <Compile Include="DeployTypes\XCopy.cs" />
+    <Compile Include="Logic\BaseController.cs" />
+    <Compile Include="Logic\TransferController.cs" />
     <Compile Include="Logic\Controller.cs" />
     <Compile Include="Logic\FileSystemUtil.cs" />
     <Compile Include="Logic\XmlUtil.cs" />
@@ -135,8 +137,11 @@
       <DependentUpon>deployer-full.xsd</DependentUpon>
     </None>
     <None Include="Deployer_TemporaryKey.pfx" />
+    <None Include="install.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Compile Include="Properties\Settings.Designer.cs">
