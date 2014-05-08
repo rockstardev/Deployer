@@ -226,15 +226,25 @@ namespace Deployer.DeployTypes
 
         public void ReplaceConfigValues(DirectoryInfo directory, ConfigReplacesRoot configReplaces)
         {
-            foreach (string f in Directory.GetFiles(directory.FullName, configReplaces.SearchExpression, SearchOption.AllDirectories))
+            var filters = configReplaces.SearchExpression.Split(',');
+            foreach (var f in filters)
+            {
+                ReplaceConfigValues(directory, configReplaces.Entries, f);
+            }
+        }
+
+        private void ReplaceConfigValues(DirectoryInfo directory, List<ConfigReplacesEntry> entries, string filter)
+        {
+            var filePaths = Directory.GetFiles(directory.FullName, filter, SearchOption.AllDirectories);
+            foreach (string fp in filePaths)
             {
                 StringBuilder file = null;
-                using (StreamReader sr = new StreamReader(f))
+                using (var sr = new StreamReader(fp))
                 {
                     file = new StringBuilder(sr.ReadToEnd());
                 }
 
-                foreach (ConfigReplacesEntry cre in configReplaces.Entries)
+                foreach (ConfigReplacesEntry cre in entries)
                 {
                     if (cre.IsSimpleFindReplace)
                         file.Replace(cre.Find, cre.Replace);
@@ -253,7 +263,7 @@ namespace Deployer.DeployTypes
                     }
                 }
 
-                using (StreamWriter sw = new StreamWriter(f, false))
+                using (var sw = new StreamWriter(fp, false))
                 {
                     sw.Write(file.ToString());
                 }
