@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Deployer")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("https://github.com/lepipele/Deployer")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("TOSHIBA")]
+[assembly: AssemblyCompany("lepipele")]
 [assembly: AssemblyProduct("Deployer")]
-[assembly: AssemblyCopyright("Copyright © TOSHIBA 2008")]
+[assembly: AssemblyCopyright("Copyright © lepipele 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.0.0.1")]
+[assembly: AssemblyFileVersion("1.0.0.1")]
