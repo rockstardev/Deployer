@@ -143,7 +143,7 @@ namespace Deployer.DeployTypes
             {
                 string[] paths = TargetPath.Split(',');
 
-                for (int i = 1; i < paths.Length; i++)
+                for (int i = 0; i < paths.Length; i++)
                 {
                     TargetPath = paths[i];
                     Execute(sourceDirectory, true, true);
