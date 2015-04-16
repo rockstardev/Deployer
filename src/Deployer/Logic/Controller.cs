@@ -160,22 +160,7 @@ namespace Deployer.Logic
                         string deployType = node.Attributes["type"].InnerXml.ToLower();
 
                         if (deployType == "xcopy")
-                        {
-                            var xcopy = new XCopy(node);
-                            if (xcopy.TargetPath.Contains(","))
-                            {
-                                string[] paths = xcopy.TargetPath.Split(',');
-
-                                for (int i = 1; i < paths.Length; i++)
-                                {
-                                    xcopy.TargetPath = paths[i];
-                                    xcopy.Execute(deployerXml.Directory);
-                                }
-
-                                xcopy.TargetPath = paths[0];
-                            }
-                            deploy = xcopy;
-                        }
+                            deploy = new XCopy(node);
                         else if (deployType == "service")
                             deploy = new Service(node);
                         else if (deployType == "clickonce")

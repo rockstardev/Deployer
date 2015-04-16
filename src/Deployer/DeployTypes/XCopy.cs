@@ -130,7 +130,21 @@ namespace Deployer.DeployTypes
 
         public override void Execute(DirectoryInfo sourceDirectory)
         {
-            Execute(sourceDirectory, true, true);
+            // support for deploying to multiple paths
+            if (TargetPath.Contains(","))
+            {
+                string[] paths = TargetPath.Split(',');
+
+                for (int i = 1; i < paths.Length; i++)
+                {
+                    TargetPath = paths[i];
+                    Execute(sourceDirectory, true, true);
+                }
+            }
+            else
+            {
+                Execute(sourceDirectory, true, true);
+            }
         }
 
         protected void Execute(DirectoryInfo sourceDirectory, bool replaceConfigValues, bool copyDllCache)
