@@ -99,6 +99,7 @@
     <Compile Include="DeployTypes\DomainClasses\DllCacheEntry.cs" />
     <Compile Include="DeployTypes\Service.cs" />
     <Compile Include="DeployTypes\XCopy.cs" />
+    <Compile Include="Logic\AppOfflineMethods.cs" />
     <Compile Include="Logic\BaseController.cs" />
     <Compile Include="Logic\TransferController.cs" />
     <Compile Include="Logic\Controller.cs" />
@@ -130,6 +131,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="!SupportFiles\AppOffline\web.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="app.config" />
     <None Include="ClassDiagram1.cd" />
     <None Include="clickOnceKey.pfx">
@@ -143,10 +147,10 @@
       <DependentUpon>deployer-full.xsd</DependentUpon>
     </None>
     <None Include="Deployer_TemporaryKey.pfx" />
-    <None Include="InstallBats\svc_uninst.bat">
+    <None Include="!SupportFiles\svc_uninst.bat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="InstallBats\svc_install.bat">
+    <None Include="!SupportFiles\svc_install.bat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Properties\app.manifest" />
@@ -173,6 +177,9 @@
   <ItemGroup>
     <Content Include="!copyToDllCache\Interop.VSFlex7L.dll" />
     <Content Include="!copyToDllCache\stdole.dll" />
+    <None Include="!SupportFiles\AppOffline\app_offline.htm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="deployer-full.xml" />
     <Content Include="deployer-intellisense.xml" />
     <Content Include="mage.exe">

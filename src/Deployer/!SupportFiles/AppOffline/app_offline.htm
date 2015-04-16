@@ -1,0 +1,18 @@
+<html>
+<head>
+	<title>Site Update in progress</title>
+</head>
+<body>
+Maintenence in progress... deploying updates... will be right back...
+
+<script type="text/javascript">
+    app.controller("SingleCtrl", function ($timeout, $window) {
+        var self = this;
+
+        $timeout(function () {
+            window.location.reload();
+        }, 30000);
+    });
+</script>
+</body>
+</html>

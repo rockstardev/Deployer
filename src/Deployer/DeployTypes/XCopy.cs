@@ -21,6 +21,7 @@ namespace Deployer.DeployTypes
         {
             XmlNode targetPathNode = configNode.SelectSingleNode("targetPath");
             TargetPath = targetPathNode.InnerXml.TrimEnd('\\');
+            AppOffline = XmlUtil.ParseBoolAttribute(targetPathNode.Attributes["appOffline"], false);
             ClearFolderBeforeCopy = XmlUtil.ParseBoolAttribute(targetPathNode.Attributes["clear"], false);
             BackupFolderBeforeCopy = XmlUtil.ParseBoolAttribute(targetPathNode.Attributes["backup"], false);
 
@@ -79,6 +80,13 @@ namespace Deployer.DeployTypes
                 this.DllCache.Add(entry);
 
             }
+        }
+
+        private bool _appOffline;
+        public bool AppOffline
+        {
+            get { return _appOffline; }
+            set { _appOffline = value; }
         }
 
         private string _targetPath;
@@ -176,6 +184,9 @@ namespace Deployer.DeployTypes
                 }
             }
 
+            if (AppOffline)
+                AppOfflineMethods.Copy(TargetDirectory);
+
             FileSystemUtil.CopyFolder(sourceDirectory.FullName, TargetPath);
 
             if (replaceConfigValues)
@@ -191,6 +202,8 @@ namespace Deployer.DeployTypes
                 CopyDllsFromCache();
 
             File.Delete(TargetPath + "\\deployer.xml");
+            if (AppOffline)
+                AppOfflineMethods.Delete(TargetDirectory);
         }
 
         protected virtual void CopyDllsFromCache()
