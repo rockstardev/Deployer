@@ -10,8 +10,8 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ClickOnceApp</RootNamespace>
     <AssemblyName>ClickOnceApp</AssemblyName>
-    <ManifestCertificateThumbprint>7BD46A7E5D5894C7D0F467F61B29C34E600A99BA</ManifestCertificateThumbprint>
-    <ManifestKeyFile>ClickOnceApp_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestCertificateThumbprint>DD1056F8699FD4F6C53C6B8DE49264DDD3746617</ManifestCertificateThumbprint>
+    <ManifestKeyFile>TestClickOnceApp_TemporaryKey.pfx</ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
     <SignManifests>true</SignManifests>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -102,7 +102,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
-    <None Include="ClickOnceApp_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -112,6 +111,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="TestClickOnceApp_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
