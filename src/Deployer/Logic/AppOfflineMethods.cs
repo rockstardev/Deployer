@@ -16,6 +16,8 @@ namespace Deployer.Logic
         {
             FileSystemUtil.CopyFile(_appOfflineHtm, target.FullName + "\\app_offline.htm");
             FileSystemUtil.CopyFile(_webConfig, target.FullName + "\\web.config");
+            // Allowing timeout for app to shut down 
+            Thread.Sleep(2000);
 
             // for testing of copy
             //Thread.Sleep(30000);

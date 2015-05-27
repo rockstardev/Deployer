@@ -21,16 +21,16 @@ namespace Deployer.Logic
             if (!Directory.Exists(dest))
                 Directory.CreateDirectory(dest);
 
-            foreach (string file in Directory.GetFiles(source))
-            {
-                string fileDestionation = dest + Path.GetFileName(file);
-                CopyFile(file, fileDestionation);
-            }
-
             foreach (string folder in Directory.GetDirectories(source))
             {
                 string subFolder = Path.GetFileName(folder);
                 CopyFolder(folder, dest + "\\" + subFolder);
+            }
+
+            foreach (string file in Directory.GetFiles(source))
+            {
+                string fileDestionation = dest + Path.GetFileName(file);
+                CopyFile(file, fileDestionation);
             }
         }
 
@@ -76,7 +76,18 @@ namespace Deployer.Logic
             if (File.Exists(destionation))
                 File.Delete(destionation);
 
-            File.Copy(source, destionation);
+            try
+            {
+                File.Copy(source, destionation, true);
+            }
+            catch (UnauthorizedAccessException uex)
+            {
+                File.SetAttributes(destionation, FileAttributes.Normal);
+                File.Delete(destionation);
+                Thread.Sleep(10);
+                // retry
+                File.Copy(source, destionation, true);
+            }
         }
 
         /// <summary>
