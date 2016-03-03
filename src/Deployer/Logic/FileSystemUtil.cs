@@ -12,25 +12,25 @@ namespace Deployer.Logic
         /// Wraps File class enabling coping of folders
         /// </summary>
         /// <param name="source">Source path</param>
-        /// <param name="dest">Destination path</param>
-        public static void CopyFolder(string source, string dest)
+        /// <param name="destination">Destination path</param>
+        public static void CopyFolder(string source, string destination)
         {
-            if (!dest.EndsWith("\\"))
-                dest += "\\";
+            if (!destination.EndsWith("\\"))
+                destination += "\\";
 
-            if (!Directory.Exists(dest))
-                Directory.CreateDirectory(dest);
+            if (!Directory.Exists(destination))
+                Directory.CreateDirectory(destination);
 
             foreach (string folder in Directory.GetDirectories(source))
             {
                 string subFolder = Path.GetFileName(folder);
-                CopyFolder(folder, dest + "\\" + subFolder);
+                CopyFolder(folder, destination + "\\" + subFolder);
             }
 
             foreach (string file in Directory.GetFiles(source))
             {
-                string fileDestionation = dest + Path.GetFileName(file);
-                CopyFile(file, fileDestionation);
+                string fileDestination = destination + Path.GetFileName(file);
+                CopyFile(file, fileDestination);
             }
         }
 
@@ -38,31 +38,31 @@ namespace Deployer.Logic
         /// Copy folder with option to exclude some folders/files
         /// </summary>
         /// <param name="source">Source path</param>
-        /// <param name="dest">Destination path</param>
+        /// <param name="destination">Destination path</param>
         /// <param name="excludePaths">List of strings of folders/files to exclude. If it is folder it must not end with \\ in order to have successful comparison</param>
-        public static void CopyFolderWithExclude(string source, string dest, List<string> excludePaths)
+        public static void CopyFolderWithExclude(string source, string destination, List<string> excludePaths)
         {
             if (excludePaths.Contains(source.TrimEnd('\\').ToLower()))
                 return;
 
-            if (!dest.EndsWith("\\"))
-                dest += "\\";
+            if (!destination.EndsWith("\\"))
+                destination += "\\";
 
-            if (!Directory.Exists(dest))
-                Directory.CreateDirectory(dest);
+            if (!Directory.Exists(destination))
+                Directory.CreateDirectory(destination);
 
             foreach (string file in Directory.GetFiles(source))
             {
-                string fileDestionation = dest + Path.GetFileName(file);
+                string fileDestination = destination + Path.GetFileName(file);
 
                 if (!excludePaths.Contains(file))
-                    CopyFile(file, fileDestionation);
+                    CopyFile(file, fileDestination);
             }
 
             foreach (string folder in Directory.GetDirectories(source))
             {
                 string subFolder = Path.GetFileName(folder);
-                CopyFolderWithExclude(folder, dest + "\\" + subFolder, excludePaths);
+                CopyFolderWithExclude(folder, destination + "\\" + subFolder, excludePaths);
             }
         }
 
@@ -70,24 +70,33 @@ namespace Deployer.Logic
         /// Wraps File.Copy method because of read only and system files
         /// </summary>
         /// <param name="source">Path to file</param>
-        /// <param name="destionation">Path to file</param>
-        public static void CopyFile(string source, string destionation)
+        /// <param name="destination">Path to file</param>
+        public static void CopyFile(string source, string destination)
         {
-            if (File.Exists(destionation))
-                File.Delete(destionation);
-
             try
             {
-                File.Copy(source, destionation, true);
+                if (File.Exists(destination))
+                    File.Delete(destination);
+
+                File.Copy(source, destination, true);
             }
             catch (UnauthorizedAccessException uex)
             {
-                File.SetAttributes(destionation, FileAttributes.Normal);
-                File.Delete(destionation);
-                Thread.Sleep(10);
-                // retry
-                File.Copy(source, destionation, true);
+                retryCopy(source, destination);
             }
+            catch (IOException iex)
+            {
+                retryCopy(source, destination);
+            }
+        }
+
+        private static void retryCopy(string source, string destination)
+        {
+            Thread.Sleep(20);
+            File.SetAttributes(destination, FileAttributes.Normal);
+            File.Delete(destination);
+            // retry
+            File.Copy(source, destination, true);
         }
 
         /// <summary>
@@ -106,7 +115,7 @@ namespace Deployer.Logic
             }
             catch
             {
-                Thread.Sleep(5000);
+                Thread.Sleep(2500);
                 deleteFileProcess(o);
                 return;
             }
@@ -116,7 +125,7 @@ namespace Deployer.Logic
         /// Reading file from disk with silent failing if it is taken
         /// </summary>
         /// <param name="filePath">Path to file</param>
-        /// <returns>FileInfo if file is successfuly read, null if it is not</returns>
+        /// <returns>FileInfo if file is successfully read, null if it is not</returns>
         public static FileInfo TryToReadFile(string filePath)
         {
             try
